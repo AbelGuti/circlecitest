@@ -4,33 +4,34 @@
 #
 version: 2
 jobs:
+
   build:
     docker:
       - image: circleci/python:3.6.1
 
   deploy: &deploy
-   docker:
+    docker:
      - image: circleci/python:3.6.1
-        docker:
-          - image: circleci/python:3.6.1
-   steps:
-     -run:
+    steps:
+     - run:
         name: install dependencies
         command: |
           echo "holaaa1"
+
   deploy-staging:
-   docker:
+    docker:
      - image: circleci/python:3.6.1
-   steps:
-     -run:
+    steps:
+     - run:
         name: install dependencies
         command: |
           echo "holaaa2"
+
   deploy-prod:
-   docker:
+    docker:
      - image: circleci/python:3.6.1
-   steps:
-     -run:
+    steps:
+     - run:
         name: install dependencies
         command: |
           echo "holaaa3"

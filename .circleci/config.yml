@@ -37,6 +37,7 @@ jobs:
         command: |
           echo "otro coso"
           echo "otro coso"
+          echo "otro coso"
           echo "$TT"
 
   deploy-prod:

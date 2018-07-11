@@ -13,9 +13,9 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            echo "$TT"
+            echo "Doing build"
 
-  deploy: &deploy
+  dockerbuild:
     docker:
      - image: circleci/python:3.6.1
     steps:
@@ -24,16 +24,7 @@ jobs:
         command: |
           echo "$TT"
 
-  deploy-staging:
-    docker:
-     - image: circleci/python:3.6.1
-    steps:
-     - run:
-        name: install dependencies
-        command: |
-          echo "$TT"
-
-  deploy-prod:
+  deployecs:
     docker:
      - image: circleci/python:3.6.1
     steps:
@@ -44,29 +35,42 @@ jobs:
 
 workflows:
   version: 2
-  build-deploy:
+  build-deploy-qa:
     jobs:
-      - build
-
-      - hold:
-          type: approval
-          requires:
-           - build
+      - build:
           filters:
             branches:
-              only: staging
-
-      - deploy-staging:
-          requires:
-            - hold
-          filters:
-            branches:
-              only: staging
-          context: staging
-
-      - deploy-prod:
+              ignore: master
+      - dockerbuild:
           requires:
             - build
+          filters:
+            branches:
+              ignore: master
+      - deployecs:
+          requires:
+            - dockerbuild
+          filters:
+            branches:
+              ignore: master
+          context: qa
+  build-deploy-stage:
+    jobs:
+      - deployecs:
+          filters:
+            branches:
+              only: master
+          context: stage
+  build-deploy-prod:
+    jobs:
+      - hold:
+          type: approval
+          filters:
+            branches:
+              only: staging
+      - deployecs:
+          requires:
+            - hold
           filters:
             branches:
               only: master

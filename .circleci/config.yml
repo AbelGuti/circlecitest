@@ -47,10 +47,13 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - deploy-staging:
+      - hold:
           type: approval
           requires:
-            - build
+           - build
+      - deploy-staging:
+          requires:
+            - - hold
           filters:
             branches:
               only: staging

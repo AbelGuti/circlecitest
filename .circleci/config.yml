@@ -1,0 +1,57 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.1
+
+  deploy: &deploy
+   docker:
+     - image: circleci/python:3.6.1
+        docker:
+          - image: circleci/python:3.6.1
+   steps:
+     -run:
+        name: install dependencies
+        command: |
+          echo "holaaa1"
+  deploy-staging:
+   docker:
+     - image: circleci/python:3.6.1
+   steps:
+     -run:
+        name: install dependencies
+        command: |
+          echo "holaaa2"
+  deploy-prod:
+   docker:
+     - image: circleci/python:3.6.1
+   steps:
+     -run:
+        name: install dependencies
+        command: |
+          echo "holaaa3"
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy-staging:
+          requires:
+            - build
+          filters:
+            branches:
+              only: staging
+          context: staging
+
+      - deploy-prod:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+          context: prodution

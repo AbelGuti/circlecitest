@@ -60,14 +60,14 @@ workflows:
           filters:
             branches:
               only: master
-          context: stage
+          context: staging
   build-deploy-prod:
     jobs:
       - hold:
           type: approval
           filters:
             branches:
-              only: staging
+              only: master
       - deployecs:
           requires:
             - hold

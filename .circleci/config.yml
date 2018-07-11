@@ -36,6 +36,7 @@ jobs:
         name: install dependencies
         command: |
           echo "holaaa2"
+          echo "$TT"
 
   deploy-prod:
     docker:

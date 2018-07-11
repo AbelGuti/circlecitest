@@ -48,6 +48,7 @@ workflows:
     jobs:
       - build
       - deploy-staging:
+          type: approval
           requires:
             - build
           filters:

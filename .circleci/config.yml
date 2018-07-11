@@ -26,7 +26,7 @@ jobs:
      - run:
         name: install dependencies
         command: |
-          echo "holaaa11"
+          echo "holaaa1133"
 
   deploy-staging:
     docker:
@@ -35,7 +35,7 @@ jobs:
      - run:
         name: install dependencies
         command: |
-          echo "holaaa2"
+          echo "holaaa233"
           echo "$TT"
 
   deploy-prod:
@@ -52,6 +52,8 @@ workflows:
   build-deploy:
     jobs:
       - deploy-staging:
+          requires:
+            - build
           filters:
             branches:
               only: staging

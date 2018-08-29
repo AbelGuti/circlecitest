@@ -35,25 +35,6 @@ jobs:
 
 workflows:
   version: 2
-  build-deploy-qa:
-    jobs:
-      - build:
-          filters:
-            branches:
-              ignore: master
-      - dockerbuild:
-          requires:
-            - build
-          filters:
-            branches:
-              ignore: master
-      - deployecs:
-          requires:
-            - dockerbuild
-          filters:
-            branches:
-              ignore: master
-          context: qa
   build-deploy-stage:
     jobs:
       - deployecs:
@@ -61,17 +42,3 @@ workflows:
             branches:
               only: master
           context: staging
-  build-deploy-prod:
-    jobs:
-      - hold:
-          type: approval
-          filters:
-            branches:
-              only: master
-      - deployecs:
-          requires:
-            - hold
-          filters:
-            branches:
-              only: master
-          context: production
